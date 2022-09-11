@@ -1,28 +1,36 @@
 import { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
-import registerService from '../services/registerService'
+import registerService from '../services/authService'
 import { User } from '../types'
 import { useNavigate } from 'react-router-dom'
+import { AuthPages } from '../enums'
 
-const useSubmit = (INITIAL_USER: User) => {
+const useSubmit = (INITIAL_USER: User, page: AuthPages) => {
   const navigate = useNavigate()
-  const [registerValues, setRegisterValues] = useState<User>(INITIAL_USER)
+  const [authValues, setAuthValues] = useState<User>(INITIAL_USER)
   const [error, setError] = useState('')
-  const { setToken } = useContext(AppContext)
+  const [isLoading, setIsLoading] = useState(false)
+  const { setToken, setUser } = useContext(AppContext)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
+    setIsLoading(true)
 
-    const { password } = registerValues
+    const { password } = authValues
 
-    if (password.trim().length < 8) {
+    if (password !== undefined && password.trim().length < 8) {
       setError('Password must contain a minimum of 8 characters')
       return
     }
-    registerService(registerValues)
+    registerService(authValues, page)
       .then(response => {
-        const { token: newToken } = response.data
+        const { token: newToken, name, email, isAdmin } = response.data
+        setUser({
+          name,
+          email,
+          isAdmin,
+        })
         setToken(newToken)
         navigate('/')
       })
@@ -34,12 +42,16 @@ const useSubmit = (INITIAL_USER: User) => {
             .join(', ')
         setError(messageError)
       })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return {
-    registerValues,
-    setRegisterValues,
+    authValues,
+    setAuthValues,
     handleSubmit,
+    isLoading,
     error,
   }
 }
