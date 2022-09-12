@@ -21,6 +21,7 @@ const useSubmit = (INITIAL_USER: User, page: AuthPages) => {
 
     if (password !== undefined && password.trim().length < 8) {
       setError('Password must contain a minimum of 8 characters')
+      setIsLoading(false)
       return
     }
     registerService(authValues, page)
@@ -33,9 +34,11 @@ const useSubmit = (INITIAL_USER: User, page: AuthPages) => {
         })
         setToken(newToken)
         navigate('/')
+        console.log('then')
       })
       .catch(error => {
         const messageError =
+          error.message ||
           error.response.data.error ||
           error.response.data.errors
             .map(({ msg }: { msg: string }) => msg)

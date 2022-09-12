@@ -7,7 +7,6 @@ import Slider from '../Slider/Slider'
 import {
   HiOutlineUser,
   HiOutlineUserCircle,
-  HiOutlineLocationMarker,
   HiOutlineMenuAlt2,
 } from 'react-icons/hi'
 import { FaLinkedin } from 'react-icons/fa'

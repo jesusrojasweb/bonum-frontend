@@ -28,7 +28,7 @@ function SliderCoach({ onClose, coachId }: Props) {
       .finally(() => {
         setIsLoading(false)
       })
-  }, [])
+  }, [token, coachId])
 
   return (
     <Slider onClose={onClose}>
@@ -39,7 +39,7 @@ function SliderCoach({ onClose, coachId }: Props) {
       ) : (
         <>
           <header className="mb-6 h-40 bg-gray-100 flex px-4 py-4">
-            <figure className="w-40 rounded-lg overflow-hidden bg-white shadow-lg self-end -mb-24">
+            <figure className="w-40 h-40 rounded-lg overflow-hidden bg-white shadow-lg self-end -mb-24">
               <img src={coach?.imageURL} alt="more info" />
             </figure>
           </header>

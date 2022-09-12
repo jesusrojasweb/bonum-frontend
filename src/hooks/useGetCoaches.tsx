@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import getCoachesService from '../services/getCoachesService'
-import { Coach } from '../types'
 
 const useGetCoaches = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +15,7 @@ const useGetCoaches = () => {
       .finally(() => {
         setIsLoading(false)
       })
-  }, [])
+  }, [setCoaches])
 
   return { coaches, isLoading }
 }
