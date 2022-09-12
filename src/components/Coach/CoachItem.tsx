@@ -4,19 +4,18 @@ import { useContext, useState } from 'react'
 import SliderCoach from '../SliderCoach/SliderCoach'
 import deleteCoachService from '../../services/deleteCoachService'
 import { AppContext } from '../../context/AppContext'
+import SliderForm from '../SliderForm/SliderForm'
+import { Coach } from '../../types'
+import { CoachesForms } from '../../enums'
 
-interface Props {
-  name: string
-  imageURL: string
-  linkdinURL: string
-  id: string
-}
-
-function CoachItem({ id, name, imageURL, linkdinURL }: Props) {
-  const [open, setOpen] = useState(false)
+function CoachItem(coach: Coach) {
+  const { id, name, imageURL, linkedinURL } = coach
+  const [isInfoOpen, setIsInfoOpen] = useState(false)
+  const [isEditOpen, setIsEditOpen] = useState(false)
   const { token, coaches, setCoaches } = useContext(AppContext)
 
-  const deleteCoach = () => {
+  const deleteCoach = (e: any) => {
+    e.stopPropagation()
     deleteCoachService(id, token)
       .then(response => {
         console.log(response)
@@ -29,25 +28,30 @@ function CoachItem({ id, name, imageURL, linkdinURL }: Props) {
       })
   }
 
+  const handleClose = (e: any) => {
+    // e.stopPropagation()
+    setIsInfoOpen(false)
+    setIsEditOpen(false)
+  }
   return (
     <>
       <article
-        className="flex justify-between items-center relative last:border-none px-4 py-2 rounded-lg hover:bg-blue-100 before:absolute before:h-[2px] before:w-[98%] before:bg-gray-200 before:bottom-0 before:justify-self-center cursor-pointer"
-        onClick={() => setOpen(true)}
+        className="flex justify-between items-center relative last:border-none px-4 py-2 rounded-lg transition duration-300 hover:bg-blue-100 before:absolute before:h-[2px] before:w-[98%] before:bg-gray-200 before:-bottom-[1px] before:justify-self-center cursor-pointer"
+        onClick={() => setIsInfoOpen(true)}
       >
         <div className="flex gap-4 items-center">
-          <figure className="w-14 rounded-lg overflow-hidden">
+          <figure className="w-14 h-14 bg-gray-100 rounded-lg overflow-hidden">
             <img src={imageURL} alt={name} className="w-full" />
           </figure>
           <h3>{name}</h3>
         </div>
         <span>
-          <a href={linkdinURL} target="_blank" rel="noreferrer">
+          <a href={linkedinURL} target="_blank" rel="noreferrer">
             <FaLinkedin />
           </a>
         </span>
         <div className="flex gap-4">
-          <button>
+          <button onClick={() => setIsEditOpen(true)}>
             <HiPencil />
           </button>
           <button onClick={deleteCoach}>
@@ -55,7 +59,16 @@ function CoachItem({ id, name, imageURL, linkdinURL }: Props) {
           </button>
         </div>
       </article>
-      {open && <SliderCoach onClose={() => setOpen(false)} coachId={id} />}
+      {isInfoOpen && !isEditOpen && (
+        <SliderCoach onClose={handleClose} coachId={id} />
+      )}
+      {isEditOpen && (
+        <SliderForm
+          onClose={handleClose}
+          INITIAL_COACH={coach}
+          form={CoachesForms.Edit}
+        />
+      )}
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../../context/AppContext'
+import { CoachesForms } from '../../enums'
 import { logOutService } from '../../services/logOutService'
 import SliderForm from '../SliderForm/SliderForm'
 
@@ -43,6 +44,7 @@ function LogOutButton() {
         <SliderForm
           onClose={() => setOpen(false)}
           INITIAL_COACH={INITIAL_COACH}
+          form={CoachesForms.Create}
         />
       )}
     </>

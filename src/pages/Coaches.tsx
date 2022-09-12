@@ -14,13 +14,7 @@ function Coaches() {
       )}
 
       {coaches.map(coach => (
-        <CoachItem
-          key={coach.id}
-          id={coach.id}
-          name={coach.name}
-          imageURL={coach.imageURL}
-          linkdinURL={coach.linkedinURL}
-        />
+        <CoachItem key={coach.id} {...coach} />
       ))}
     </section>
   )

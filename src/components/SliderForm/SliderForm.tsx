@@ -13,13 +13,15 @@ import {
 import { FaLinkedin } from 'react-icons/fa'
 import sendCoachService from '../../services/sendCoachService'
 import { AppContext } from '../../context/AppContext'
+import { CoachesForms } from '../../enums'
 
 interface Props {
   onClose: any
   INITIAL_COACH: Coach
+  form: CoachesForms
 }
 
-function SliderForm({ onClose, INITIAL_COACH }: Props) {
+function SliderForm({ onClose, INITIAL_COACH, form }: Props) {
   const [newCoach, setNewCoach] = useState<Coach>(INITIAL_COACH)
   const { coaches, setCoaches } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
@@ -28,11 +30,21 @@ function SliderForm({ onClose, INITIAL_COACH }: Props) {
   const handleSubmit = (e: any) => {
     e.preventDefault()
     setIsLoading(true)
-    sendCoachService(newCoach, token)
+    sendCoachService(newCoach, token, form, INITIAL_COACH.id)
       .then(response => {
         if (coaches !== null) {
           onClose()
-          setCoaches([...coaches, response.data])
+          if (form === CoachesForms.Create) {
+            setCoaches([...coaches, response.data])
+          } else {
+            const coachesEdited = coaches.map(coach => {
+              if (coach.id === response.data.id) {
+                return response.data
+              }
+              return coach
+            })
+            setCoaches(coachesEdited)
+          }
         }
       })
       .catch(error => {
@@ -46,7 +58,7 @@ function SliderForm({ onClose, INITIAL_COACH }: Props) {
   return (
     <Slider onClose={onClose}>
       <FormContainer
-        title="Create Coach"
+        title={form + ' Coach'}
         handleSubmit={handleSubmit}
         error=""
         isLoading={isLoading}
@@ -75,12 +87,12 @@ function SliderForm({ onClose, INITIAL_COACH }: Props) {
           value={newCoach?.linkedinURL || ''}
           onChange={e => handleChange(e, newCoach, setNewCoach)}
         />
-        <Input
+        {/* <Input
           type="text"
           name="countrie"
           placeholder="Coach Countrie"
           Icon={HiOutlineLocationMarker}
-        />
+        /> */}
         <Input
           type="text"
           name="description"
