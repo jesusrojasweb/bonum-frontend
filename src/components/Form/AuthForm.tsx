@@ -19,41 +19,43 @@ function AuthForm({ INITIAL_USER, page }: Props) {
 
   return (
     <section className="min-h-screen grid place-content-center bg-gray-100">
-      <FormContainer
-        handleSubmit={handleSubmit}
-        error={error}
-        title={page}
-        isLoading={isLoading}
-      >
-        <>
-          {isRegister && (
-            <Input
-              type="text"
-              name="name"
-              placeholder="Full name"
-              Icon={HiOutlineUser}
-              value={authValues.name || ''}
-              onChange={e => handleChange(e, authValues, setAuthValues)}
-            />
-          )}
-        </>
-        <Input
-          type="email"
-          name="email"
-          placeholder="Email"
-          Icon={HiAtSymbol}
-          value={authValues.email}
-          onChange={e => handleChange(e, authValues, setAuthValues)}
-        />
-        <Input
-          type="password"
-          name="password"
-          placeholder="Password"
-          Icon={HiLockClosed}
-          value={authValues.password || ''}
-          onChange={e => handleChange(e, authValues, setAuthValues)}
-        />
-      </FormContainer>
+      <div className="shadow-2xl rounded-lg w-96 overflow-hidden">
+        <FormContainer
+          handleSubmit={handleSubmit}
+          error={error}
+          title={page}
+          isLoading={isLoading}
+        >
+          <>
+            {isRegister && (
+              <Input
+                type="text"
+                name="name"
+                placeholder="Full name"
+                Icon={HiOutlineUser}
+                value={authValues.name || ''}
+                onChange={e => handleChange(e, authValues, setAuthValues)}
+              />
+            )}
+          </>
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            Icon={HiAtSymbol}
+            value={authValues.email}
+            onChange={e => handleChange(e, authValues, setAuthValues)}
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            Icon={HiLockClosed}
+            value={authValues.password || ''}
+            onChange={e => handleChange(e, authValues, setAuthValues)}
+          />
+        </FormContainer>
+      </div>
     </section>
   )
 }

@@ -18,7 +18,7 @@ function FormContainer({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col shadow-2xl rounded-lg w-96 px-12 py-10 box-content bg-white"
+      className="flex flex-col px-12 py-10 box-content bg-white"
     >
       <h1 className="font-semibold text-lg mb-6 capitalize">{title}</h1>
       {error !== '' && (

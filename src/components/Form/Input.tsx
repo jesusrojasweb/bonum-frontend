@@ -5,8 +5,8 @@ interface Props {
   type: string
   name: string
   placeholder: string
-  value: string
-  onChange: (e: any) => void
+  value?: string
+  onChange?: (e: any) => void
 }
 
 function Input({ Icon, type, name, placeholder, ...params }: Props) {

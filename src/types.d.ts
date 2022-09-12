@@ -4,3 +4,12 @@ export interface User {
   password?: string
   isAdmin?: boolean
 }
+
+export interface Coach {
+  id: string
+  name: string
+  imageURL: string
+  description: string
+  linkedinURL: string
+  countrie: Countries
+}
