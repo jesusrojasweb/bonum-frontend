@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import PrivateRoute from './components/CustomRoutes/PrivateRoute'
+import PublicRoute from './components/CustomRoutes/PublicRoute'
+import Header from './components/Header/Header'
+import AppProvider from './context/AppContext'
+import Coaches from './pages/Coaches'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AppProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<Coaches />} />
+          </Route>
+
+          <Route path="/login" element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route path="/register" element={<PublicRoute />}>
+            <Route path="/register" element={<Register />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
+  )
 }
 
-export default App;
+export default App
